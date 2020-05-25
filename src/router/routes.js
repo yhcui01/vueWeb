@@ -7,7 +7,6 @@ let routes = [
 	{ path: '/login', component: Login },
 ];
 
-console.log(routes)
 
 
 
