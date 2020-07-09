@@ -28,7 +28,7 @@
 		<div class="login-banner" ref="bannerContainer">
 			
 				<div class="img-container">
-				<img v-show="isShowColor" @load="imgLoad" ref ="bannerImg" class="login-img" :src="`http://${bannerData[bannerNumber%bannerData.length]}`" >
+				<img v-show="isShowColor" @load="imgLoad" ref ="bannerImg" class="login-img" :src=" bannerData ? `http://${bannerData[bannerNumber%bannerData.length]}`:'javascript;'" >
 				</img>
 				
 				<div class="login-pwd-container">
@@ -97,7 +97,7 @@
 				<li class="margin">
 					|
 				</li>
-					<li class="text">
+					<li @click='handleChartTools' class="text">
 					<a href="javascript:;">
 						联系我们
 					</a>
@@ -144,7 +144,6 @@
 <script>
 import RGBaster from 'rgbaster';
 
-
 window.currentPath = '/login';
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -166,6 +165,13 @@ export default {
 		};
 	},
 	methods: {
+		handleChartTools(){
+			// console.log(this,'$socket')
+			this.$socket.emit('login',{a:1})
+			this.$socket.listeners('relogin', (data) => {
+				console.log(data,'xxxxxxx')
+			})
+		},
     handleChange(info) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList);
@@ -239,7 +245,6 @@ export default {
 	},
 	
 	mounted() {
-
 		let self = this;
 		let ls = window.localStorage;
 		ls && ls.setItem('banner_number',(Number(self.bannerNumber))+1) 
